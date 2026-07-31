@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff7e5f"/>
+      <stop offset="0.5" stop-color="#feb47b"/>
+      <stop offset="1" stop-color="#0a7e8c"/>
+    </linearGradient>
+    <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a7e8c"/>
+      <stop offset="1" stop-color="#045361"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <rect width="512" height="512" rx="96" fill="url(#sky)"/>
+  <!-- Sun -->
+  <circle cx="256" cy="200" r="70" fill="#fff2c9" opacity="0.95"/>
+  <!-- Ocean -->
+  <path d="M0 340 Q128 300 256 340 T512 340 L512 512 L0 512 Z" fill="url(#ocean)"/>
+  <!-- Wave highlights -->
+  <path d="M0 360 Q128 330 256 360 T512 360" stroke="#7fd0d9" stroke-width="6" fill="none" opacity="0.6"/>
+  <path d="M0 400 Q128 375 256 400 T512 400" stroke="#7fd0d9" stroke-width="4" fill="none" opacity="0.4"/>
+  <!-- Palm tree trunk -->
+  <path d="M370 470 Q380 400 395 340 Q400 300 405 260" stroke="#5b3a1e" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- Palm fronds -->
+  <g fill="#2e8b57" stroke="#1f6b41" stroke-width="3" stroke-linejoin="round">
+    <path d="M405 255 Q360 220 300 235 Q345 235 380 260 Z"/>
+    <path d="M405 255 Q450 220 500 240 Q460 240 425 265 Z"/>
+    <path d="M405 255 Q380 200 350 170 Q385 210 400 250 Z"/>
+    <path d="M405 255 Q440 205 480 180 Q445 220 415 255 Z"/>
+    <path d="M405 255 Q370 260 330 285 Q375 270 400 265 Z"/>
+  </g>
+  <!-- Coconuts -->
+  <circle cx="405" cy="258" r="7" fill="#5b3a1e"/>
+  <circle cx="415" cy="265" r="6" fill="#5b3a1e"/>
+  <!-- Hibiscus flower (bottom-left) -->
+  <g transform="translate(110,410)">
+    <g fill="#e63946" stroke="#a52836" stroke-width="2">
+      <ellipse cx="0" cy="-24" rx="18" ry="24"/>
+      <ellipse cx="23" cy="-7" rx="18" ry="24" transform="rotate(72 23 -7)"/>
+      <ellipse cx="14" cy="22" rx="18" ry="24" transform="rotate(144 14 22)"/>
+      <ellipse cx="-14" cy="22" rx="18" ry="24" transform="rotate(216 14 22)"/>
+      <ellipse cx="-23" cy="-7" rx="18" ry="24" transform="rotate(288 -23 -7)"/>
+    </g>
+    <circle cx="0" cy="0" r="8" fill="#ffcf40"/>
+  </g>
+</svg>
