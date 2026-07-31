@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>🌺 Kauai Countdown 🌴</title>
+<meta name="theme-color" content="#0a7e8c" />
+<meta name="description" content="Wendell & Denise's Kauai trip countdown & checklist" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" type="image/svg+xml" href="icon.svg" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Kauai" />
+<style>
+  :root {
+    --sand: #f5e6c8;
+    --ocean: #0a7e8c;
+    --deep: #045361;
+    --sunset: #ff7e5f;
+    --leaf: #2e8b57;
+    --hibiscus: #e63946;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    min-height: 100vh;
+    background:
+      linear-gradient(180deg, rgba(255,126,95,0.35) 0%, rgba(10,126,140,0.55) 45%, rgba(4,83,97,0.85) 100%),
+      url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #fff;
+    padding: 20px;
+    /* Reserve space on the left for the fixed side column so main content
+       (header, countdown, checklist) never sits underneath it. */
+    padding-left: calc(clamp(188px, 22.5vw, 300px) + clamp(24px, 3vw, 40px));
+  }
+  /* --- Corner widgets (left column stack) --- */
+  .side-col {
+    position: fixed;
+    top: clamp(8px, 1.5vw, 20px);
+    left: clamp(8px, 1.5vw, 20px);
+    width: clamp(188px, 22.5vw, 300px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1vw, 14px);
+    z-index: 10;
+  }
+  .corner {
+    background: rgba(255,255,255,0.92);
+    color: #223;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    padding: clamp(10px, 1.25vw, 15px);
+    font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+    backdrop-filter: blur(4px);
+  }
+  .corner h3 {
+    margin: 0 0 6px;
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--deep);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  /* Weather widget */
+  #weather .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  #weather .temp {
+    font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+    font-weight: 700;
+    color: var(--sunset);
+    line-height: 1;
+  }
+  #weather .icon { font-size: clamp(1.6rem, 2.4vw, 2.2rem); }
+  #weather .desc {
+    font-size: clamp(0.7rem, 0.85vw, 0.8rem);
+    color: #555;
+    margin-top: 2px;
+  }
+  #weather .time {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px;
+  }
+  #weather .time .clock {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--ocean);
+    font-size: clamp(0.85rem, 1.1vw, 1rem);
+  }
+  #weather .time .tz {
+    font-size: 0.65rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  /* Webcam widget */
+  #cam .frame {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+  }
+  #cam .frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  #cam .caption {
+    margin-top: 6px;
+    font-size: 0.7rem;
+    color: #666;
+    text-align: center;
+  }
+  #cam .caption a {
+    color: var(--ocean);
+    text-decoration: none;
+  }
+  #cam .caption a:hover { text-decoration: underline; }
+
+  /* Narrow screens: stack widgets on top instead of side, so main content isn't crushed */
+  @media (max-width: 720px) {
+    body { padding-left: 20px; }
+    .side-col {
+      position: static;
+      width: 100%;
+      flex-direction: row;
+      margin-bottom: 12px;
+    }
+    .side-col .corner { flex: 1; }
+    header { padding-top: 10px; }
+  }
+  header {
+    text-align: center;
+    padding: 20px 10px 10px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 2px;
+  }
+  header p {
+    margin: 8px 0 0;
+    font-size: 1.1rem;
+    opacity: 0.95;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    gap: 24px;
+  }
+  .card {
+    background: rgba(255,255,255,0.92);
+    color: #223;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  }
+  .card h2 {
+    margin-top: 0;
+    color: var(--deep);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  /* Countdown */
+  .countdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .cd-box {
+    background: linear-gradient(135deg, var(--ocean), var(--deep));
+    color: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.15);
+  }
+  .cd-box .num {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .cd-box .lbl {
+    margin-top: 6px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    opacity: 0.9;
+  }
+  .flight-info {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  .flight-info strong { color: var(--hibiscus); }
+  /* Checklist */
+  .add-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .add-row input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 2px solid #cfd8dc;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .add-row input:focus { border-color: var(--ocean); }
+  .add-row button {
+    padding: 0 18px;
+    background: var(--sunset);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+  }
+  .add-row button:hover { background: var(--hibiscus); }
+  .add-row button:active { transform: scale(0.96); }
+  ul.tasks {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+  }
+  ul.tasks li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #f7fafc;
+    margin-bottom: 8px;
+    transition: background 0.2s;
+  }
+  ul.tasks li:hover { background: #eef4f6; }
+  ul.tasks input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--leaf);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  ul.tasks .txt {
+    flex: 1;
+    font-size: 1rem;
+    word-break: break-word;
+  }
+  ul.tasks li.done .txt {
+    text-decoration: line-through;
+    color: #90a4ae;
+  }
+  ul.tasks .del {
+    background: transparent;
+    border: none;
+    color: #b0bec5;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  ul.tasks .del:hover { color: var(--hibiscus); background: #ffe5e5; }
+  .empty {
+    text-align: center;
+    color: #90a4ae;
+    padding: 12px;
+    font-style: italic;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.85;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+</style>
+</head>
+<body>
+  <div class="side-col">
+    <div class="corner" id="weather">
+      <h3>🌤️ Hanalei, Kauai</h3>
+      <div class="row">
+        <div>
+          <div class="temp" id="wTemp">--°</div>
+          <div class="desc" id="wDesc">Loading...</div>
+        </div>
+        <div class="icon" id="wIcon">🌴</div>
+      </div>
+      <div class="time">
+        <span class="clock" id="wClock">--:--</span>
+        <span class="tz">HST</span>
+      </div>
+    </div>
+
+    <div class="corner" id="cam">
+      <h3>📹 Kauai Live Cam</h3>
+      <div class="frame">
+        <iframe
+          id="camFrame"
+          src="https://www.youtube-nocookie.com/embed/svPODEA4dpw?autoplay=1&mute=1&playsinline=1&rel=0"
+          title="Sheraton Kauai Live Cam"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="caption">
+        Sheraton Kauai · <a href="https://www.youtube.com/watch?v=svPODEA4dpw" target="_blank" rel="noopener">open on YouTube</a>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <h1>🌺 Aloha, Kauai! 🌴</h1>
+    <p>Wendell &amp; Denise — Sept 16, 2026 · Departing COS 6:55 AM</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>✈️ Countdown to Paradise</h2>
+      <div class="countdown">
+        <div class="cd-box">
+          <div class="num" id="days">--</div>
+          <div class="lbl">Days</div>
+        </div>
+        <div class="cd-box">
+          <div class="num" id="hours">--</div>
+          <div class="lbl">Hours</div>
+        </div>
+      </div>
+      <div class="flight-info" id="flightInfo">
+        Flight departs <strong>COS</strong> on <strong>Sept 16, 2026 at 6:55 AM</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🌸 Trip Checklist</h2>
+      <form class="add-row" id="addForm">
+        <input type="text" id="taskInput" placeholder="Add an item... (sunscreen, snorkel gear, etc.)" autocomplete="off" />
+        <button type="submit">Add</button>
+      </form>
+      <ul class="tasks" id="taskList"></ul>
+      <div class="empty" id="emptyMsg">No items yet — add your first one above 🌺</div>
+    </div>
+  </div>
+
+  <footer>Mahalo &amp; safe travels 🐢🌊</footer>
+
+<script>
+  // --- Countdown ---
+  // Sept 16, 2026 6:55 AM Mountain Time (COS). MDT (UTC-6) in September.
+  const FLIGHT = new Date("2026-09-16T06:55:00-06:00");
+
+  function updateCountdown() {
+    const now = new Date();
+    let diff = FLIGHT - now;
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const info = document.getElementById("flightInfo");
+
+    if (diff <= 0) {
+      daysEl.textContent = "0";
+      hoursEl.textContent = "0";
+      info.innerHTML = "🌈 <strong>Aloha! Enjoy Kauai!</strong> 🌴";
+      return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    diff -= days * (1000 * 60 * 60 * 24);
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    daysEl.textContent = days;
+    hoursEl.textContent = hours;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 60 * 1000);
+
+  // --- Checklist (persists in localStorage) ---
+  const STORAGE_KEY = "kauai-tasks-v1";
+  const listEl = document.getElementById("taskList");
+  const emptyMsg = document.getElementById("emptyMsg");
+  const form = document.getElementById("addForm");
+  const input = document.getElementById("taskInput");
+
+  let tasks = [];
+  try {
+    tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  } catch { tasks = []; }
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }
+
+  function render() {
+    listEl.innerHTML = "";
+    if (tasks.length === 0) {
+      emptyMsg.style.display = "block";
+      return;
+    }
+    emptyMsg.style.display = "none";
+    tasks.forEach((t, idx) => {
+      const li = document.createElement("li");
+      if (t.done) li.classList.add("done");
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!t.done;
+      cb.addEventListener("change", () => {
+        tasks[idx].done = cb.checked;
+        save();
+        render();
+      });
+
+      const span = document.createElement("span");
+      span.className = "txt";
+      span.textContent = t.text;
+
+      const del = document.createElement("button");
+      del.className = "del";
+      del.title = "Delete";
+      del.textContent = "✕";
+      del.addEventListener("click", () => {
+        tasks.splice(idx, 1);
+        save();
+        render();
+      });
+
+      li.append(cb, span, del);
+      listEl.appendChild(li);
+    });
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    tasks.push({ text, done: false });
+    input.value = "";
+    save();
+    render();
+  });
+
+  render();
+
+  // --- Kauai local clock (HST, no DST) ---
+  const clockEl = document.getElementById("wClock");
+  function updateClock() {
+    clockEl.textContent = new Date().toLocaleTimeString("en-US", {
+      timeZone: "Pacific/Honolulu",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+  updateClock();
+  setInterval(updateClock, 30 * 1000);
+
+  // --- Weather for Hanalei via Open-Meteo (no API key) ---
+  const WMO = {
+    0:  ["Clear",           "☀️"],
+    1:  ["Mostly clear",    "🌤️"],
+    2:  ["Partly cloudy",   "⛅"],
+    3:  ["Overcast",        "☁️"],
+    45: ["Fog",             "🌫️"],
+    48: ["Fog",             "🌫️"],
+    51: ["Light drizzle",   "🌦️"],
+    53: ["Drizzle",         "🌦️"],
+    55: ["Heavy drizzle",   "🌧️"],
+    61: ["Light rain",      "🌦️"],
+    63: ["Rain",            "🌧️"],
+    65: ["Heavy rain",      "🌧️"],
+    80: ["Showers",         "🌦️"],
+    81: ["Showers",         "🌧️"],
+    82: ["Heavy showers",   "⛈️"],
+    95: ["Thunderstorm",    "⛈️"],
+    96: ["Thunderstorm",    "⛈️"],
+    99: ["Thunderstorm",    "⛈️"],
+  };
+  async function updateWeather() {
+    try {
+      const url = "https://api.open-meteo.com/v1/forecast"
+        + "?latitude=22.2074&longitude=-159.5017"
+        + "&current=temperature_2m,weather_code"
+        + "&temperature_unit=fahrenheit"
+        + "&timezone=Pacific/Honolulu";
+      const res = await fetch(url);
+      const data = await res.json();
+      const t = Math.round(data.current.temperature_2m);
+      const code = data.current.weather_code;
+      const [desc, icon] = WMO[code] || ["Tropical", "🌴"];
+      document.getElementById("wTemp").textContent = t + "°F";
+      document.getElementById("wDesc").textContent = desc;
+      document.getElementById("wIcon").textContent = icon;
+    } catch (e) {
+      document.getElementById("wDesc").textContent = "Offline";
+      document.getElementById("wTemp").textContent = "—";
+    }
+  }
+  updateWeather();
+  setInterval(updateWeather, 15 * 60 * 1000);
+
+  // --- PWA: register service worker (offline + install) ---
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js").catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
