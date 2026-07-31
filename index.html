@@ -221,6 +221,17 @@
     color: #444;
   }
   .flight-info strong { color: var(--hibiscus); }
+  .top-container { margin-bottom: 12px; }
+  .feedback-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,230,220,0.95));
+    border-left: 4px solid var(--hibiscus);
+  }
+  .feedback-card h2 {
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+  .notes-list li { background: #fff5f2; }
+  .notes-list li:hover { background: #ffe8e0; }
   /* Checklist */
   .add-row {
     display: flex;
@@ -356,6 +367,18 @@
     </div>
   </div>
 
+  <div class="container top-container">
+    <div class="card feedback-card">
+      <h2>💌 Tell your husband what to add here that can help you lose weight</h2>
+      <form class="add-row" id="noteForm">
+        <input type="text" id="noteInput" placeholder="e.g. Add a daily step counter, a weight log, motivation quotes..." autocomplete="off" />
+        <button type="submit">Send</button>
+      </form>
+      <ul class="tasks notes-list" id="noteList"></ul>
+      <div class="empty" id="noteEmpty">Nothing yet — Denise, drop your ideas here 💕</div>
+    </div>
+  </div>
+
   <header>
     <h1>🌺 Aloha, Kauai! 🌴</h1>
     <p>Wendell &amp; Denise — Sept 16, 2026 · Departing COS 6:55 AM</p>
@@ -488,6 +511,71 @@
   });
 
   render();
+
+  // --- Feedback notes for Wendell (persists in localStorage) ---
+  const NOTE_KEY = "kauai-notes-v1";
+  const noteListEl = document.getElementById("noteList");
+  const noteEmpty = document.getElementById("noteEmpty");
+  const noteForm = document.getElementById("noteForm");
+  const noteInput = document.getElementById("noteInput");
+
+  let notes = [];
+  try { notes = JSON.parse(localStorage.getItem(NOTE_KEY) || "[]"); } catch { notes = []; }
+
+  function saveNotes() { localStorage.setItem(NOTE_KEY, JSON.stringify(notes)); }
+
+  function renderNotes() {
+    noteListEl.innerHTML = "";
+    if (notes.length === 0) {
+      noteEmpty.style.display = "block";
+      return;
+    }
+    noteEmpty.style.display = "none";
+    notes.forEach((n, idx) => {
+      const li = document.createElement("li");
+      if (n.done) li.classList.add("done");
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!n.done;
+      cb.title = "Mark as addressed";
+      cb.addEventListener("change", () => {
+        notes[idx].done = cb.checked;
+        saveNotes();
+        renderNotes();
+      });
+
+      const span = document.createElement("span");
+      span.className = "txt";
+      const when = n.added ? new Date(n.added).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "";
+      span.textContent = when ? `${n.text}  ·  ${when}` : n.text;
+
+      const del = document.createElement("button");
+      del.className = "del";
+      del.title = "Delete";
+      del.textContent = "✕";
+      del.addEventListener("click", () => {
+        notes.splice(idx, 1);
+        saveNotes();
+        renderNotes();
+      });
+
+      li.append(cb, span, del);
+      noteListEl.appendChild(li);
+    });
+  }
+
+  noteForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = noteInput.value.trim();
+    if (!text) return;
+    notes.push({ text, done: false, added: Date.now() });
+    noteInput.value = "";
+    saveNotes();
+    renderNotes();
+  });
+
+  renderNotes();
 
   // --- Kauai local clock (HST, no DST) ---
   const clockEl = document.getElementById("wClock");
