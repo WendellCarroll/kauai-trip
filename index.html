@@ -296,6 +296,21 @@
     padding: 12px;
     font-style: italic;
   }
+  #installBtn {
+    display: none;
+    margin: 12px auto 0;
+    padding: 10px 18px;
+    background: var(--sunset);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  #installBtn:hover { background: var(--hibiscus); }
+  #installBtn.visible { display: block; }
   footer {
     text-align: center;
     padding: 20px;
@@ -373,7 +388,10 @@
     </div>
   </div>
 
-  <footer>Mahalo &amp; safe travels 🐢🌊</footer>
+  <footer>
+    <button id="installBtn">📱 Install App</button>
+    Mahalo &amp; safe travels 🐢🌊
+  </footer>
 
 <script>
   // --- Countdown ---
@@ -532,6 +550,26 @@
       navigator.serviceWorker.register("service-worker.js").catch(() => {});
     });
   }
+
+  // --- PWA: in-page install button (fallback when browser menu is hidden) ---
+  let deferredInstall = null;
+  const installBtn = document.getElementById("installBtn");
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredInstall = e;
+    installBtn.classList.add("visible");
+  });
+  installBtn.addEventListener("click", async () => {
+    if (!deferredInstall) return;
+    deferredInstall.prompt();
+    const { outcome } = await deferredInstall.userChoice;
+    if (outcome === "accepted") installBtn.classList.remove("visible");
+    deferredInstall = null;
+  });
+  window.addEventListener("appinstalled", () => {
+    installBtn.classList.remove("visible");
+    deferredInstall = null;
+  });
 </script>
 </body>
 </html>
