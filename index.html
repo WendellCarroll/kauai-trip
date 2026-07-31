@@ -64,29 +64,30 @@
     gap: var(--gap);
   }
 
-  /* ---------- Landscape / wide screens: 2-column masonry-ish grid ---------- */
+  /* ---------- Landscape / wide screens: 2-column grid ---------- */
   @media (min-width: 780px) {
     .app {
       max-width: 960px;
       padding: 24px 20px 48px;
       display: grid;
       grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "header header"
+        "util   util"
+        "hero   notes"
+        "list   cam"
+        "foot   foot";
       column-gap: 16px;
       row-gap: var(--gap);
       align-items: start;
     }
-    /* Header spans the full width */
-    .app > .app-header { grid-column: 1 / -1; }
-    /* Utility bar spans full width so its inner 2-col layout stays intact */
-    .app > .util-row   { grid-column: 1 / -1; }
-    /* Footer full width */
-    .app > .foot       { grid-column: 1 / -1; }
-    /* Hero countdown left, notes right on the first content row */
-    .app > .hero       { grid-column: 1; }
-    .app > .notes-card { grid-column: 2; }
-    /* Then checklist left, cam right */
-    .app > .card       { grid-column: 1; }
-    .app > details.cam { grid-column: 2; }
+    .app > .app-header { grid-area: header; }
+    .app > .util-row   { grid-area: util; }
+    .app > .hero       { grid-area: hero; }
+    .app > .notes-card { grid-area: notes; }
+    .app > .card       { grid-area: list; }
+    .app > details.cam { grid-area: cam; }
+    .app > .foot       { grid-area: foot; }
   }
 
   /* ---------- Header ---------- */
@@ -233,7 +234,7 @@
   /* ---------- Utility bar (weather + progress) ---------- */
   .util-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 10px;
   }
   .util {
@@ -605,14 +606,6 @@
           <span>HST</span>
         </div>
       </div>
-      <div class="util" id="progressCard">
-        <div class="lbl">Packed</div>
-        <div class="value">
-          <span class="primary" id="pgFrac">0 / 0</span>
-          <span class="secondary" id="pgPct"></span>
-        </div>
-        <div class="progress-bar"><span id="pgFill"></span></div>
-      </div>
     </section>
 
     <!-- NOTES / FEEDBACK -->
@@ -783,9 +776,6 @@
   }
 
   // --- Checklist ---
-  const pgFrac = document.getElementById("pgFrac");
-  const pgPct  = document.getElementById("pgPct");
-  const pgFill = document.getElementById("pgFill");
   const listBadge = document.getElementById("listBadge");
 
   makeChecklist({
@@ -798,11 +788,9 @@
     onChange: (items) => {
       const total = items.length;
       const done  = items.filter(i => i.done).length;
-      pgFrac.textContent = `${done} / ${total}`;
-      const pct = total ? Math.round((done / total) * 100) : 0;
-      pgPct.textContent = total ? `${pct}%` : "";
-      pgFill.style.width = pct + "%";
-      listBadge.textContent = total === 1 ? "1 item" : `${total} items`;
+      listBadge.textContent = total === 0
+        ? "0 items"
+        : `${done} / ${total} packed`;
     }
   });
 
