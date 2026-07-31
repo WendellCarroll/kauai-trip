@@ -1,6 +1,6 @@
 // Kauai Countdown — service worker
 // Bump CACHE version to force clients to fetch new files after a deploy.
-const CACHE = "kauai-v5";
+const CACHE = "kauai-v6";
 const ASSETS = [
   "./",
   "./index.html",
