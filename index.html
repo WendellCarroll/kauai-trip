@@ -86,7 +86,8 @@
     .app > .hero       { grid-area: hero; }
     .app > .notes-card { grid-area: notes; }
     .app > .card       { grid-area: list; }
-    .app > details.cam { grid-area: cam; }
+    .app > details.cam,
+    .app > .cam-card   { grid-area: cam; }
     .app > .foot       { grid-area: foot; }
   }
 
@@ -458,53 +459,33 @@
     margin: 4px 0 14px;
   }
 
-  /* ---------- Cam details drawer ---------- */
-  details.cam {
+  /* ---------- Cam card (always open) ---------- */
+  .cam-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
   }
-  details.cam > summary {
-    list-style: none;
-    padding: 16px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.15s;
-  }
-  details.cam > summary::-webkit-details-marker { display: none; }
-  details.cam > summary:hover { background: var(--bg); }
-  details.cam > summary:active { transform: scale(0.998); }
-  details.cam .sum-left {
+  .cam-card .cam-head {
+    padding: 14px 18px 10px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
   }
-  details.cam .sum-left .lbl {
+  .cam-card .cam-head .lbl {
     font-size: 11px;
     letter-spacing: 1.8px;
     text-transform: uppercase;
     color: var(--muted);
     font-weight: 600;
   }
-  details.cam .sum-left .title {
+  .cam-card .cam-head .title {
     font-size: 14px;
     color: var(--ink);
     font-weight: 500;
   }
-  details.cam .chevron {
-    font-size: 16px;
-    color: var(--muted);
-    transition: transform 0.2s ease;
-  }
-  details.cam[open] .chevron { transform: rotate(180deg); }
-  details.cam .cam-body {
-    padding: 0 18px 18px;
-  }
-  details.cam .frame {
+  .cam-card .cam-body { padding: 4px 18px 18px; }
+  .cam-card .frame {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%;
@@ -512,20 +493,20 @@
     overflow: hidden;
     background: #000;
   }
-  details.cam .frame iframe {
+  .cam-card .frame iframe {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     border: 0;
   }
-  details.cam .caption {
+  .cam-card .caption {
     margin-top: 10px;
     font-size: 11.5px;
     color: var(--muted);
     text-align: center;
   }
-  details.cam .caption a {
+  .cam-card .caption a {
     color: var(--ink);
     text-decoration: none;
     border-bottom: 1px solid var(--border);
@@ -610,8 +591,8 @@
 
     <!-- NOTES / FEEDBACK -->
     <section class="notes-card" aria-label="Feedback">
-      <h2>Ideas for Wendell</h2>
-      <p class="prompt">Tell him what to add here that can help you lose weight.</p>
+      <h2>Feedback for Wendell</h2>
+      <p class="prompt">Tell him what would add value on this app.</p>
       <form class="add-row" id="noteForm">
         <input type="text" id="noteInput" placeholder="A daily step count, weight log, motivation…" autocomplete="off" />
         <button type="submit">Send</button>
@@ -634,15 +615,12 @@
       <div class="empty" id="emptyMsg">No items yet. Add your first one above.</div>
     </section>
 
-    <!-- LIVE CAM -->
-    <details class="cam">
-      <summary>
-        <div class="sum-left">
-          <span class="lbl">Live from Kauai</span>
-          <span class="title">Sheraton Kauai · Poipu Beach</span>
-        </div>
-        <span class="chevron" aria-hidden="true">⌄</span>
-      </summary>
+    <!-- LIVE CAM (always open) -->
+    <section class="cam-card">
+      <div class="cam-head">
+        <span class="lbl">Live from Kauai</span>
+        <span class="title">Sheraton Kauai · Poipu Beach</span>
+      </div>
       <div class="cam-body">
         <div class="frame">
           <iframe
@@ -658,7 +636,7 @@
           <a href="https://www.youtube.com/watch?v=svPODEA4dpw" target="_blank" rel="noopener">Open on YouTube</a>
         </div>
       </div>
-    </details>
+    </section>
 
     <footer class="foot">
       <button id="installBtn" type="button">Install App</button>
