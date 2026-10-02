@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Kauai — Wendell & Denise</title>
-<meta name="theme-color" content="#0F3E75" />
+<meta name="theme-color" content="#072B5B" />
 <meta name="description" content="Wendell & Denise's Kauai trip countdown & checklist" />
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="icon" type="image/svg+xml" href="icon.svg" />
@@ -20,15 +20,15 @@
 
 <style>
   :root {
-    --bg:            #F4F7FB;      /* soft cool white */
+    --bg:            #E8EEF7;      /* clearer cool blue-grey */
     --card:          #FFFFFF;
-    --border:        #E1E8F0;
-    --ink:           #0F3E75;      /* deep ocean blue — primary */
-    --ink-soft:      #395B85;
-    --muted:         #7C8CA3;
-    --terracotta:    #2F80ED;      /* bright accent blue (badges/toggles) */
-    --sand:          #D4E4F7;
-    --leaf:          #1E88E5;      /* progress / success accent */
+    --border:        #B8C8DE;      /* stronger card edge */
+    --ink:           #072B5B;      /* deeper navy */
+    --ink-soft:      #2A4A78;
+    --muted:         #5A6D87;      /* darker secondary text */
+    --terracotta:    #1565D8;      /* bolder accent blue */
+    --sand:          #BBD3F0;
+    --leaf:          #0D6EFD;
     --danger:        #B84B3E;
     --radius:        16px;
     --radius-sm:     10px;
@@ -50,7 +50,7 @@
     text-rendering: optimizeLegibility;
     background:
       /* soft warm tint so the modern light palette stays dominant */
-      linear-gradient(180deg, rgba(244,247,251,0.86) 0%, rgba(244,247,251,0.78) 55%, rgba(244,247,251,0.90) 100%),
+      linear-gradient(180deg, rgba(232,238,247,0.92) 0%, rgba(232,238,247,0.86) 55%, rgba(232,238,247,0.95) 100%),
       url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80") center / cover no-repeat fixed,
       var(--bg);
   }
@@ -100,8 +100,8 @@
     font-size: 11px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 600;
+    color: var(--terracotta);
+    font-weight: 700;
   }
   .app-header h1 {
     font-family: var(--serif);
@@ -129,6 +129,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 18px;
+    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
   }
   .card h2 {
     font-family: var(--sans);
@@ -153,16 +154,16 @@
     align-items: center;
     gap: 6px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.5px;
-    color: var(--terracotta);
-    background: rgba(194, 109, 71, 0.10);
-    padding: 4px 10px;
+    color: #fff;
+    background: var(--terracotta);
+    padding: 5px 11px;
     border-radius: 999px;
   }
   .badge.leaf {
-    color: var(--leaf);
-    background: rgba(46, 125, 91, 0.10);
+    color: #fff;
+    background: var(--ink);
   }
   .badge.mono {
     font-family: 'SF Mono', 'JetBrains Mono', ui-monospace, monospace;
@@ -175,6 +176,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 22px 20px;
+    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
   }
   .hero-title {
     font-family: var(--serif);
@@ -243,6 +245,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 14px 14px;
+    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
   }
   .util .lbl {
     font-size: 10.5px;
@@ -330,7 +333,7 @@
     cursor: pointer;
     transition: transform 0.08s ease, background 0.15s;
   }
-  .add-row button:hover { background: #0A2E5A; }
+  .add-row button:hover { background: #041C3E; }
   .add-row button:active { transform: scale(0.97); }
 
   /* ---------- Lists ---------- */
@@ -446,9 +449,10 @@
   .notes-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-left: 3px solid var(--terracotta);
+    border-left: 4px solid var(--terracotta);
     border-radius: var(--radius);
     padding: 18px;
+    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
   }
   .notes-card .prompt {
     font-family: var(--serif);
@@ -465,6 +469,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
+    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
   }
   .cam-card .cam-head {
     padding: 14px 18px 10px;
@@ -538,7 +543,7 @@
     cursor: pointer;
     transition: transform 0.08s ease, background 0.15s;
   }
-  #installBtn:hover { background: #1966D0; }
+  #installBtn:hover { background: #0D4FB3; }
   #installBtn:active { transform: scale(0.97); }
   #installBtn.visible { display: block; }
 </style>
@@ -556,7 +561,7 @@
     <section class="hero" aria-label="Flight countdown">
       <div class="card-head">
         <div class="hero-title">Countdown to paradise</div>
-        <span class="badge mono">COS <span style="color:var(--terracotta)">➔</span> LIH</span>
+        <span class="badge mono">COS <span>➔</span> LIH</span>
       </div>
       <div class="hero-grid">
         <div class="hero-cell">
