@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Kauai — Wendell & Denise</title>
-<meta name="theme-color" content="#072B5B" />
+<meta name="theme-color" content="#041E47" />
 <meta name="description" content="Wendell & Denise's Kauai trip countdown & checklist" />
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="icon" type="image/svg+xml" href="icon.svg" />
@@ -20,15 +20,15 @@
 
 <style>
   :root {
-    --bg:            #E8EEF7;      /* clearer cool blue-grey */
+    --bg:            #D7E3F4;      /* clearer blue tint */
     --card:          #FFFFFF;
-    --border:        #B8C8DE;      /* stronger card edge */
-    --ink:           #072B5B;      /* deeper navy */
-    --ink-soft:      #2A4A78;
-    --muted:         #5A6D87;      /* darker secondary text */
-    --terracotta:    #1565D8;      /* bolder accent blue */
-    --sand:          #BBD3F0;
-    --leaf:          #0D6EFD;
+    --border:        #8FA8C8;      /* bolder card edge */
+    --ink:           #041E47;      /* near-black navy */
+    --ink-soft:      #1E3A68;
+    --muted:         #4B5F7E;
+    --terracotta:    #0D5BD6;      /* saturated accent blue */
+    --sand:          #A6C2E5;
+    --leaf:          #0A4EC2;
     --danger:        #B84B3E;
     --radius:        16px;
     --radius-sm:     10px;
@@ -50,7 +50,7 @@
     text-rendering: optimizeLegibility;
     background:
       /* soft warm tint so the modern light palette stays dominant */
-      linear-gradient(180deg, rgba(232,238,247,0.92) 0%, rgba(232,238,247,0.86) 55%, rgba(232,238,247,0.95) 100%),
+      linear-gradient(180deg, rgba(215,227,244,0.68) 0%, rgba(215,227,244,0.55) 55%, rgba(215,227,244,0.72) 100%),
       url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80") center / cover no-repeat fixed,
       var(--bg);
   }
@@ -129,7 +129,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 18px;
-    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
+    box-shadow: 0 4px 14px rgba(4, 30, 71, 0.14);
   }
   .card h2 {
     font-family: var(--sans);
@@ -176,7 +176,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 22px 20px;
-    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
+    box-shadow: 0 4px 14px rgba(4, 30, 71, 0.14);
   }
   .hero-title {
     font-family: var(--serif);
@@ -245,7 +245,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 14px 14px;
-    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
+    box-shadow: 0 4px 14px rgba(4, 30, 71, 0.14);
   }
   .util .lbl {
     font-size: 10.5px;
@@ -333,7 +333,7 @@
     cursor: pointer;
     transition: transform 0.08s ease, background 0.15s;
   }
-  .add-row button:hover { background: #041C3E; }
+  .add-row button:hover { background: #02132E; }
   .add-row button:active { transform: scale(0.97); }
 
   /* ---------- Lists ---------- */
@@ -452,7 +452,7 @@
     border-left: 4px solid var(--terracotta);
     border-radius: var(--radius);
     padding: 18px;
-    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
+    box-shadow: 0 4px 14px rgba(4, 30, 71, 0.14);
   }
   .notes-card .prompt {
     font-family: var(--serif);
@@ -469,7 +469,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: 0 2px 6px rgba(7, 43, 91, 0.06);
+    box-shadow: 0 4px 14px rgba(4, 30, 71, 0.14);
   }
   .cam-card .cam-head {
     padding: 14px 18px 10px;
@@ -543,7 +543,7 @@
     cursor: pointer;
     transition: transform 0.08s ease, background 0.15s;
   }
-  #installBtn:hover { background: #0D4FB3; }
+  #installBtn:hover { background: #0847AA; }
   #installBtn:active { transform: scale(0.97); }
   #installBtn.visible { display: block; }
 </style>
